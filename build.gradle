@@ -1,0 +1,121 @@
+//group 'com.cat'
+//version '1.0'
+//
+//apply plugin: 'java'
+////apply plugin: 'maven'
+//apply plugin: 'eclipse'
+//apply plugin: 'idea'
+//apply plugin: 'org.springframework.boot'
+////apply plugin: 'war'
+////apply plugin: 'org.akhikhl.gretty'
+//
+//sourceCompatibility = 1.8
+//
+//repositories {
+//    mavenLocal()
+//    maven { url 'http://maven.aliyun.com/nexus/content/groups/public/' }
+//    mavenCentral()
+//}
+//
+//ext {
+//    boot = '1.5.2.RELEASE'
+//    gretty = '1.4.2'
+//    servlet = '3.1.0'
+//    spring = '4.3.7.RELEASE'
+//    lombok = '1.16.16'
+//    jackson = '2.8.8'
+//    junit = '4.12'
+//}
+//
+//buildscript {
+//    dependencies {
+////        classpath "org.springframework.boot:spring-boot-gradle-plugin:$boot"
+////        classpath "org.akhikhl.gretty:gretty:$gretty"
+////        classpath "org.springframework.boot:spring-boot-gradle-plugin:$boot"
+//        classpath "org.akhikhl.gretty:gretty:1.4.2"
+//    }
+//    repositories {
+//        jcenter()
+//    }
+//}
+//
+//dependencies {
+//    compile(
+//            "org.springframework.boot:spring-boot-starter-web",
+//            "org.thymeleaf:thymeleaf-spring4",
+//            "org.projectlombok:lombok:$lombok",
+//            "com.fasterxml.jackson.core:jackson-databind:$jackson"
+//    )
+//
+//    providedCompile("javax.servlet:javax.servlet-api:$servlet")
+//
+//    testCompile(
+//            "org.springframework.boot:spring-boot-starter-test",
+//            "junit:junit:$junit"
+//    )
+//}
+//
+buildscript {
+    repositories {
+        mavenCentral()
+    }
+    dependencies {
+        classpath("org.springframework.boot:spring-boot-gradle-plugin:1.5.2.RELEASE")
+    }
+}
+
+//apply plugin: 'java'
+//apply plugin: 'idea'
+//apply plugin: 'org.springframework.boot'
+
+plugins {
+    id 'org.springframework.boot' version '1.5.2.RELEASE'
+    id 'java'
+}
+
+jar {
+    baseName = 'app'
+//    version = '1.0'
+}
+
+repositories {
+    mavenLocal()
+    maven { url 'http://maven.aliyun.com/nexus/content/groups/public/' }
+    mavenCentral()
+}
+
+sourceCompatibility = 1.8
+targetCompatibility = 1.8
+
+dependencies {
+    // tag::jetty[]
+    compile("org.springframework.boot:spring-boot-starter-web") {
+        exclude module: "spring-boot-starter-tomcat"
+    }
+    compile("org.springframework.boot:spring-boot-starter-jetty")
+    // end::jetty[]
+    // tag::actuator[]
+    compile("org.springframework.boot:spring-boot-starter-actuator")
+    // end::actuator[]
+    testCompile("junit:junit")
+    testCompile("org.springframework.boot:spring-boot-starter-test")
+
+    // https://mvnrepository.com/artifact/org.apache.lucene/lucene-core
+    compile group: 'org.apache.lucene', name: 'lucene-core', version: '6.5.0'
+
+}
+
+bootRun {
+    addResources = true
+}
+
+springBoot {
+    backupSource = false
+}
+
+bootRepackage {
+    mainClass = 'com.cat.Application'
+}
+
+//https://spring.io/guides/gs/spring-boot/
+//http://docs.spring.io/spring-boot/docs/current/reference/html/build-tool-plugins-maven-plugin.html
